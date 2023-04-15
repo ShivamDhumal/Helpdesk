@@ -1,0 +1,278 @@
+{% load static %}
+{% block content %}
+<div class="home_content home_contenthai">
+
+  <div class="container-fluid col-md-10">
+    <div class="row">
+
+      <form action="{% url 'helpdeskapp:create_ticket' %}" method='post' enctype='multipart/form-data' class="p-3">
+        {% csrf_token %}
+        {{form_errors}}
+
+
+
+        <h1 class="head"><i class="fa fa-file-excel-o fa-2px" id="icon-circle" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
+          &nbsp;Submit a Request</h1>
+        <P id="mark">Required fields are marked with
+          <span class="important">*</span>
+        </P><br>
+
+
+        <div class="form-group col-md-12">
+          <label for="inputtitle" id="form-label" class="form-label">Title:<span class="important">*</span></label>
+          <input type="title" class="form-control" id="title" placeholder="Issue title" name='title' required>
+        </div><br><br>
+
+
+       
+
+        <div class="form-group col-md-12">
+          <label for="exampleInputEmail1" id="form-label" class="form-label">Email:<span
+              class="important">*</span></label>
+              <span class="im-buttons">
+                <label class="radio" id="a-button">
+                  <input name="im-buttons" type="radio" id="a-button" checked="checked"/><span>Self</span>
+                </label>
+                <label class="radio" id="b-button">
+                  <input name="im-buttons" type="radio" id="b-button"/><span>Behalf off</span>
+                </label>
+              </span>
+        </div>
+      
+      
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="name@example.com"
+            aria-describedby="emailHelp" required><br><br>
+       
+
+
+        
+        <div class="form-group col-md-12">
+          <label for="exampleFormControlTextarea1" id="form-label" class="form-label">Description :</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" name='description'
+            required></textarea>
+        </div><br><br>
+
+        
+        <div class="form-group col-md-12">
+          <label for="inputState" id="form-label" class="form-label">Department :</label>
+          <select id="inputState" class="form-control" name='department' required>
+            <option selected>Choose...</option>
+            <option>HR</option>
+            <option>Admin</option>
+            <option>Tech</option>
+          </select>
+        </div><br><br>
+
+
+        <div class="form-group col-md-12">
+          <label for="inputState" id="form-label" class="form-label">Ticket Type :</label>
+          <select id="inputState" class="form-control" name='ticketType' required>
+            <option selected>Choose...</option>
+            <option>Wifi </option>
+            <option>Printer</option>
+            <option>Mail</option>
+          </select>
+        </div><br><br>
+
+
+        <div class="form-group col-md-12">
+          <label for="inputState" id="form-label" class="form-label">Sub Type :</label>
+          <select id="inputState" class="form-control" name='ticketSubType' required>
+            <option selected>Choose...</option>
+            <option>Range</option>
+            <option>Connectivity</option>
+            <option>Wlan</option>
+          </select>
+        </div><br><br>
+
+        
+        <div class="form-group col-md-12">
+          <label for="inputState" id="form-label" class="form-label">Issue Type :</label>
+          <select id="inputState" class="form-control" name='ticketSubType' required>
+            <option selected>Choose...</option>
+            <option>Request</option>
+            <option>Issue</option>
+            <option>Major issue</option>
+          </select>
+        </div><br><br>
+
+
+        <div class="form-group">
+          <label for="inputtitle" id="form-label" class="form-label">Priority:</label>
+          <div class="dropdown-select center out-close priority" data-value="3" required>
+            <select name="priority" class="form-select" aria-label="Default select example">
+              <option value="3" selected="">Choose...</option>
+              <option value="2">Medium</option>
+              <option value="1">High</option>
+              <option value="0">Critical</option>
+            </select>
+          </div><br><br>
+
+          <div class="form-group">
+            <div class="col" id="radio">
+            <label for="inputtitle" id="form-label" class="form-label">Do you want add contact number ?</label>
+            <br>
+            <input type="radio" class="yn" name="tab" value="igottwo" onclick="show2();"/>&nbsp;Yes
+
+            <div id="div1" class="hide"><br>
+              <div class="input-box col-md-6">
+                <span class="prefix" class="form-control">+91</span>
+                <input type="tel" class="form-control" placeholder="210 123 4567" size="10" minlength="10" maxlength="10" name='contact_number'
+                   />
+              </div>
+            </div><br><br>
+
+
+            <div class="col " id="radio">
+              <input  type="radio" name="tab" value="igotnone" onclick="show1();" />
+              No
+          </div>
+            </div>
+          </div><br><br>
+          
+
+
+
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="inputCity" id="form-label" class="form-label">Attachment :</label>
+            <input type="file" class="form-control" id="inputCity" placeholder="Your name.." name='attachment'>
+          </div><br>
+        </div>
+
+
+
+          <input class="btn btn-primary" type="submit" value="Submit">
+          <input class="btn btn-primary" type="reset" value="Reset">
+
+      </form>
+      <br><br>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+
+      $('#attachment').on('change', function (event) {
+          var filename = $($(this).val().match(/([^\/\\]+)$/)).get(1);
+
+          // file not choosed
+          if (typeof filename === 'undefined') {
+              return false;
+          }
+
+          var $file = $(this).closest('.form__file');
+
+          $file
+              .addClass('form__file--attached')
+              .find('.form__file-filename')
+              .html(filename);
+
+          $file
+              .find('.form__file-input')
+              .prop('disabled', true);
+
+          // list of files
+          var $files = $('#attachment-files');
+
+          // show files list
+          if ($files.find('li').length === 0) {
+              $files.removeClass('form__files--hide').addClass('form__files--show');
+          }
+
+          // create a new item
+          var $item = $('<li/>')
+              .addClass('form__files-item')
+              .addClass('form__files-item--loading')
+              .append($('<span/>').addClass('form__files-item-link').html(filename))
+              .append($('<span/>').addClass('form__files-item-remove').attr('data-file-remove', true).html('Remove'))
+              .append($('<span/>').addClass('form__files-item-progress'))
+              .append($('<input/>').attr({ type: 'hidden', name: 'attachments[]', value: '{}' }));
+
+          $files.append($item);
+
+          // progress bar
+          $item.find('.form__files-item-progress').animate({ width: '100%' }, 2000);
+
+          $('#attachment-files').trigger('contentChanged');
+
+          setTimeout(function () {
+              $file.removeClass('form__file--attached');
+
+              $file
+                  .find('.form__file-input')
+                  .prop('disabled', false);
+
+              var v = $file.find('.form__file-filename').data('placeholder');
+              $file.find('.form__file-filename').html(v);
+              $file.find('.form__file-input').val('');
+
+              $item
+                  .removeClass('form__files-item--loading')
+                  .addClass('form__files-item--done');
+
+              $item.find('.form__files-item-link').replaceWith(function () {
+                  var text = $.trim($(this).text());
+                  return $('<a/>').attr({ href: '#', target: '_blank' }).addClass('form__files-item-link').html(text);
+              });
+
+              var _itemData = JSON.stringify({
+                  id: uuidv4(),
+                  name: filename,
+                  url_view: '',
+                  url_delete: ''
+              }, null, '');
+
+              $item
+                  .find('input[type=hidden]')
+                  .val(_itemData);
+
+              console.log('File uploaded: ', JSON.parse(_itemData));
+
+              $item.find('[data-file-remove=true]').on('click', function () {
+                  var $removeItem = $(this).closest('.form__files-item')
+                      , itemData = JSON.parse($removeItem.find('input[type=hidden]').attr('value'));
+
+                  // ajax request
+                  console.log('File deleted: ', itemData.id);
+
+                  $removeItem.addClass('form__files-item--hide');
+
+                  // hide files list
+                  if ($files.find('li').length <= 1) {
+                      $files.removeClass('form__files--show').addClass('form__files--hide');
+                  }
+
+                  $('#attachment-files').trigger('contentChanged');
+
+                  setTimeout(function () {
+                      $removeItem.remove();
+                  }, 500);
+
+              });
+          }, 2000);
+      });
+
+      $('#attachment-files').on('contentChanged', function () {
+          console.log(1);
+          console.log($('li', this).length);
+
+          // $(this).each(function() {
+          //   if ($(this).length <= 1) {
+          //     $(this).removeClass('form__files--show').addClass('form__files--hide');
+          //   }
+          // });
+      });
+
+      // $("ul").children().length
+
+      function uuidv4() {
+          return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+              var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+          });
+      }
+  });
+</script>
+{% endblock %}
